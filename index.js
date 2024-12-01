@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/dbConfig");
@@ -5,13 +6,11 @@ const imageRoute = require("./routes/imageRoute");
 const authRoute = require("./routes/authRoute");
 const restaurantRoute = require("./routes/restaurantRoute");
 const sharedCartRoute = require("./routes/sharedCart");
-const feURL = "http://localhost:5173"
+const feURL = process.env.FE_URL
 
 async function startServer() {
   try {
-    await connectDB(
-        "mongodb+srv://jahnavig310:uPQwV1SErAPcR57E@cluster0.f17zh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-    );
+    await connectDB(process.env.MONGO_URI);
     const app = express();
 
     app.use(express.json());
