@@ -19,6 +19,7 @@ async function startServer() {
       cors({
         origin: feURL,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true,
       })
     )
