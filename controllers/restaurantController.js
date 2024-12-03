@@ -66,3 +66,25 @@ exports.addOffer = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+exports.searchRestaurant = async (req, res) => {
+    try {
+        const { restaurantId } = req.params;
+        const { query } = req.query; 
+
+        const categories = await Category.find({ restaurants: restaurantId });
+        const categoryIds = categories.map(cat => cat._id);
+
+        const products = await Product.find({
+            category: { $in: categoryIds },
+            name: new RegExp(query, 'i')
+        }).populate('category');
+
+        if(products.length === 0) {
+            return res.status(404).json({ message: "No products found" });
+        }
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ message: "Error searching products", error: error.message });
+    }
+}
