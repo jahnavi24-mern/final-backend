@@ -81,7 +81,7 @@ exports.getProfile = async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const userId = decoded.userId;
         
-        const user = await User.findById(userId).populate("cards").populate("addresses");
+        const user = await User.findById(userId).select('-password').populate("cards").populate("addresses");
         if (!user) {
             return res.status(404).json({
                 success: false,
